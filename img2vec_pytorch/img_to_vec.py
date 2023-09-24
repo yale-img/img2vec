@@ -115,7 +115,7 @@ class Img2Vec():
         """
 
         if model_name.startswith('resnet') and not model_name.startswith('resnet-'):
-            model = getattr(models, model_name)(pretrained=True)
+            model = getattr(models, model_name)(weights='DEFAULT')
             if layer == 'default':
                 layer = model._modules.get('avgpool')
                 self.layer_output_size = self.RESNET_OUTPUT_SIZES[model_name]
@@ -123,7 +123,7 @@ class Img2Vec():
                 layer = model._modules.get(layer)
             return model, layer
         elif model_name == 'resnet-18':
-            model = models.resnet18(pretrained=True)
+            model = models.resnet18(weights='DEFAULT')
             if layer == 'default':
                 layer = model._modules.get('avgpool')
                 self.layer_output_size = 512
@@ -133,7 +133,7 @@ class Img2Vec():
             return model, layer
 
         elif model_name == 'alexnet':
-            model = models.alexnet(pretrained=True)
+            model = models.alexnet(weights='DEFAULT')
             if layer == 'default':
                 layer = model.classifier[-2]
                 self.layer_output_size = 4096
@@ -144,7 +144,7 @@ class Img2Vec():
 
         elif model_name == 'vgg':
             # VGG-11
-            model = models.vgg11_bn(pretrained=True)
+            model = models.vgg11_bn(weights='DEFAULT')
             if layer == 'default':
                 layer = model.classifier[-2]
                 self.layer_output_size = model.classifier[-1].in_features # should be 4096
@@ -155,7 +155,7 @@ class Img2Vec():
 
         elif model_name == 'densenet':
             # Densenet-121
-            model = models.densenet121(pretrained=True)
+            model = models.densenet121(weights='DEFAULT')
             if layer == 'default':
                 layer = model.features[-1]
                 self.layer_output_size = model.classifier.in_features # should be 1024
@@ -167,21 +167,21 @@ class Img2Vec():
         elif "efficientnet" in model_name:
             # efficientnet-b0 ~ efficientnet-b7
             if model_name == "efficientnet_b0":
-                model = models.efficientnet_b0(pretrained=True)
+                model = models.efficientnet_b0(weights='DEFAULT')
             elif model_name == "efficientnet_b1":
-                model = models.efficientnet_b1(pretrained=True)
+                model = models.efficientnet_b1(weights='DEFAULT')
             elif model_name == "efficientnet_b2":
-                model = models.efficientnet_b2(pretrained=True)
+                model = models.efficientnet_b2(weights='DEFAULT')
             elif model_name == "efficientnet_b3":
-                model = models.efficientnet_b3(pretrained=True)
+                model = models.efficientnet_b3(weights='DEFAULT')
             elif model_name == "efficientnet_b4":
-                model = models.efficientnet_b4(pretrained=True)
+                model = models.efficientnet_b4(weights='DEFAULT')
             elif model_name == "efficientnet_b5":
-                model = models.efficientnet_b5(pretrained=True)
+                model = models.efficientnet_b5(weights='DEFAULT')
             elif model_name == "efficientnet_b6":
-                model = models.efficientnet_b6(pretrained=True)
+                model = models.efficientnet_b6(weights='DEFAULT')
             elif model_name == "efficientnet_b7":
-                model = models.efficientnet_b7(pretrained=True)
+                model = models.efficientnet_b7(weights='DEFAULT')
             else:
                 raise KeyError('Un support %s.' % model_name)
 

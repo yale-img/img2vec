@@ -2,7 +2,7 @@ import unittest
 from PIL import Image
 import numpy
 
-from . import Img2Vec
+from img2vec_pytorch.img_to_vec import Img2Vec
 
 class TestImg2Vec(unittest.TestCase):
     def test_default(self):
