@@ -58,7 +58,9 @@ class Img2Vec():
                       else torch.stack(a).to(self.device))
             if self.model_name in ['alexnet', 'vgg']:
                 my_embedding = torch.zeros(len(img), self.layer_output_size)
-            elif self.model_name == 'densenet' or 'efficientnet' in self.model_name:
+            elif (self.model_name == 'densenet'
+                  or self.model_name == 'shufflenet'
+                  or 'efficientnet' in self.model_name):
                 my_embedding = torch.zeros(len(img), self.layer_output_size, 7, 7)
             else:
                 my_embedding = torch.zeros(len(img), self.layer_output_size, 1, 1)
@@ -76,7 +78,9 @@ class Img2Vec():
             else:
                 if self.model_name in ['alexnet', 'vgg']:
                     return my_embedding.numpy()[:, :]
-                elif self.model_name == 'densenet' or 'efficientnet' in self.model_name:
+                elif (self.model_name == 'densenet'
+                      or self.model_name == 'shufflenet'
+                      or 'efficientnet' in self.model_name):
                     return torch.mean(my_embedding, (2, 3), True).numpy()[:, :, 0, 0]
                 else:
                     return my_embedding.numpy()[:, :, 0, 0]
@@ -87,7 +91,9 @@ class Img2Vec():
 
             if self.model_name in ['alexnet', 'vgg']:
                 my_embedding = torch.zeros(1, self.layer_output_size)
-            elif self.model_name == 'densenet' or 'efficientnet' in self.model_name:
+            elif (self.model_name == 'densenet'
+                  or self.model_name == 'shufflenet'
+                  or 'efficientnet' in self.model_name):
                 my_embedding = torch.zeros(1, self.layer_output_size, 7, 7)
             else:
                 my_embedding = torch.zeros(1, self.layer_output_size, 1, 1)
@@ -105,7 +111,9 @@ class Img2Vec():
             else:
                 if self.model_name in ['alexnet', 'vgg']:
                     return my_embedding.numpy()[0, :]
-                elif self.model_name == 'densenet':
+                elif (self.model_name == 'densenet'
+                      or self.model_name == 'shufflenet'
+                      or 'efficientnet' in self.model_name):
                     return torch.mean(my_embedding, (2, 3), True).numpy()[0, :, 0, 0]
                 else:
                     return my_embedding.numpy()[0, :, 0, 0]
@@ -191,6 +199,16 @@ class Img2Vec():
             if layer == 'default':
                 layer = model.features
                 self.layer_output_size = self.EFFICIENTNET_OUTPUT_SIZES[model_name]
+            else:
+                raise KeyError('Un support %s for layer parameters' % model_name)
+
+            return model, layer
+
+        elif model_name == 'shufflenet':
+            model = models.shufflenet_v2_x0_5(weights='DEFAULT')
+            if layer == 'default':
+                layer = model.conv5[-1]
+                self.layer_output_size = model.fc.in_features # should be 1024
             else:
                 raise KeyError('Un support %s for layer parameters' % model_name)
 
