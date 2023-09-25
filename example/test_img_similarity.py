@@ -1,9 +1,7 @@
-import sys
 import os
-sys.path.append("../img2vec_pytorch")  # Adds higher directory to python modules path.
-from img_to_vec import Img2Vec
 from PIL import Image
 from sklearn.metrics.pairwise import cosine_similarity
+from img2vec_pytorch import Img2Vec
 
 
 input_path = './test_images'
