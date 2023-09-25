@@ -35,6 +35,8 @@ class Img2Vec():
 
         self.model, self.extraction_layer = self._get_model_and_layer(model, layer)
 
+        if self.device.type == 'cuda':
+            self.model.half()
         self.model = self.model.to(self.device)
 
         self.model.eval()
@@ -52,7 +54,8 @@ class Img2Vec():
         """
         if isinstance(img, list):
             a = [self.normalize(self.to_tensor(self.scaler(im))) for im in img]
-            images = torch.stack(a).to(self.device)
+            images = (torch.stack(a).to(self.device).half() if self.device.type == 'cuda'
+                      else torch.stack(a).to(self.device))
             if self.model_name in ['alexnet', 'vgg']:
                 my_embedding = torch.zeros(len(img), self.layer_output_size)
             elif self.model_name == 'densenet' or 'efficientnet' in self.model_name:
@@ -79,6 +82,8 @@ class Img2Vec():
                     return my_embedding.numpy()[:, :, 0, 0]
         else:
             image = self.normalize(self.to_tensor(self.scaler(img))).unsqueeze(0).to(self.device)
+            if self.device.type == 'cuda':
+                image = image.half()
 
             if self.model_name in ['alexnet', 'vgg']:
                 my_embedding = torch.zeros(1, self.layer_output_size)
