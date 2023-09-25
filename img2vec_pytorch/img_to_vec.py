@@ -53,7 +53,7 @@ class Img2Vec():
         :returns: Numpy ndarray
         """
         if isinstance(img, list):
-            a = [self.preprocess(img) for im in img]
+            a = [self.preprocess(im) for im in img]
             images = (torch.stack(a).to(self.device).half() if self.device.type == 'cuda'
                       else torch.stack(a).to(self.device))
             if self.model_name in ['alexnet', 'vgg']:
