@@ -23,16 +23,27 @@ Medium post on building the first version from scratch:  https://becominghuman.a
 |efficientnet_b5|2048|
 |efficientnet_b6|2304|
 |efficientnet_b7|2560|
+|shufflenet|1024|
 
 ## Installation
 
-Tested on Python 3.6 and torchvision 0.11.0 (nightly, 2021-09-25) 
+Tested on Python 3.9 and torchvision 0.15.1
 
 Requires Pytorch: http://pytorch.org/
 
-```conda install -c pytorch-nightly torchvision```
+```console
+pip install img2vec_pytorch
+```
 
-```pip install img2vec_pytorch```
+To install within a virtual environment (i.e. for developing this package), install with [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer):
+
+```console
+cd img2vec  # this repository
+poetry install
+```
+
+Note that you may need to install a supported version of Python, for which [pyenv](https://github.com/pyenv/pyenv) is a great tool.
+
 
 ## Run test
 
@@ -58,15 +69,24 @@ vectors = img2vec.get_vec(list_of_PIL_images)
  * Pillow:  ```pip install Pillow```
  * Sklearn ```pip install scikit-learn```
 
+ If installing a virtual environment with Poetry, you can specify the `dev` dependency group:
+
+ ```console
+ poetry install --with dev
+ ```
+
+
 ## Running the example
-```git clone https://github.com/christiansafka/img2vec.git```
 
-```cd img2vec/example```
-
-```python test_img_similarity.py```
+```console
+git clone https://github.com/yale-img/img2vec.git
+cd img2vec
+poetry install
+cd example
+poetry run python test_img_similarity.py
 
 #### Expected output
-```
+
 Which filename would you like similarities for?
 cat.jpg
 0.72832 cat2.jpg
@@ -81,6 +101,7 @@ face2.jpg
 0.50084 cat2.jpg
 0.484863 catdog.jpg
 ```
+
 Try adding your own photos!
 
 
@@ -89,7 +110,6 @@ Try adding your own photos!
 **model** = ('resnet-18', 'efficientnet_b0', etc.) &nbsp; # Which model to use? &nbsp; &nbsp; default: 'resnet-18'<br>
 
 ## Advanced users 
-----
 
 ### Read only file systems
 
@@ -170,7 +190,3 @@ Defaults: (layer = 1 from features, layer_output_size = 1280 for efficientnet_b0
 - Benchmark speed and accuracy
 - Add ability to fine-tune on input data
 - Export documentation to a normal place
-
-
-
-
